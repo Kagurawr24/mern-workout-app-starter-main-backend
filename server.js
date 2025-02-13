@@ -12,14 +12,18 @@ const express = require("express");
 const mongoose = require("mongoose");
 // Require routes
 const workoutRoutes = require("./routes/workouts");
-
-// require cors
+const userRoutes = require("./routes/user");
+// Require cors
 const cors = require("cors");
+
 // Set up the express app
 const app = express();
 
-// allow requests from all origin
+// Allow requests from all origins (for development only)
 app.use(cors());
+
+// Handle preflight requests globally
+app.options("*", cors());
 
 // Middleware:
 // any code that executes between us getting a request on the server
@@ -38,6 +42,7 @@ app.use((req, res, next) => {
 // Routes
 // workoutRoutes is triggered when we make a request to /api/workouts
 app.use("/api/workouts", workoutRoutes);
+app.use("/api/user", userRoutes);
 
 // Connect to DB
 mongoose
@@ -51,3 +56,4 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+  
